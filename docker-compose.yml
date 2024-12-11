@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  web:
+    container_name: stoking-app
+    build: images/php-apache
+    working_dir: /var/www/html
+    depends_on:
+      - db
+    ports:
+      - "8000:80"
+      - "12345:12345"
+    volumes:
+      - ./www:/var/www/html
+      - ./images/php-apache/php.ini:/usr/local/etc/php/conf.d/custom.ini
+      - ./logs/apache:/var/log/apache2
+      - ./images/php-apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
+    command: /bin/bash -c "php yii server/start 12345"
+
+  db:
+    container_name: stoking-mysql-8
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: stoking-test
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    ports:
+      - "6033:3306"
+    volumes:
+      - ./database:/var/lib/mysql
+
+  pma:
+    container_name: stoking-phpmyadmin
+    image: phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      - PMA_ARBITRARY=1
+
+  composer:
+    container_name: stoking-composer
+    image: composer:2.3
+    command: "composer install --ignore-platform-reqs"
+    working_dir: /var/www/html
+    restart: "no"
+    volumes:
+      - ./www:/var/www/html

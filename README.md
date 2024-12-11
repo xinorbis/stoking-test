@@ -1,0 +1,12 @@
+Инструкция по запуску:
+- запустить команду docker-compose up из корня проекта;
+- зайти в контейнер web/app командой docker-compose exec web bash;
+- выполнить миграции командой php yii migrate (TODO: завернуть команду в docker-compose для автовыполнения);
+- перезапустить контейнер с приложением, что бы появилась возможность работать с БД после применения миграций;
+- клиенту указать заголовок User-Agent;
+- клиенту указать заголовок ApiKey и значение eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImV4cCI6MTczNjMzOTAyMn0.EBvIOg1PQpc12ECI+nor0nHyl4dqqs6wgMFUfWOtRsI=;
+- подключиться к серверу по адресу ws://localhost:12345;
+- отправить сообщение (не обязательно);
+- отключиться от сервера;
+- авторизоваться по адресу http://localhost:8080/ указав логин и пароль admin admin;
+- удостовериться в ведении лога подключений в БД stoking-test -> connections.
